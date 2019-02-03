@@ -19,18 +19,24 @@ namespace BrowserGame.Migrations
                 .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("BrowserGame.Models.UserLogin", b =>
+            modelBuilder.Entity("BrowserGame.Models.Personage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Capital");
+
+                    b.Property<string>("Category");
+
+                    b.Property<string>("History");
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("Possession");
+
                     b.HasKey("Id");
 
-                    b.ToTable("UsersLogin");
+                    b.ToTable("Personages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

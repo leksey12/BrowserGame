@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BrowserGame.Migrations
 {
-    public partial class CreateIdentityShema : Migration
+    public partial class BrowserGameMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,23 @@ namespace BrowserGame.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Personages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(nullable: true),
+                    History = table.Column<string>(nullable: true),
+                    Possession = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Capital = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,6 +224,9 @@ namespace BrowserGame.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Personages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
