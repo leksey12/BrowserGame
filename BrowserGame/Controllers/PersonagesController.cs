@@ -54,14 +54,24 @@ namespace BrowserGame.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,History,Possession,Category,Capital")] Personage personage)
+        public async Task<IActionResult> Create(Personage personage)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(personage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(personage);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Невозможно сохранить изменения. " +
+                                   "Повторите попытку, и если проблема не устранена, " +
+            "обратитесь к системному администратору.");
+        }
             return View(personage);
         }
 
@@ -84,54 +94,60 @@ namespace BrowserGame.Controllers
         // POST: Personages/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,History,Possession,Category,Capital")] Personage personage)
+        public async Task<IActionResult> EditPost(int? id)
         {
-            if (id != personage.Id)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var studentToUpdate = await _context.Personages.SingleOrDefaultAsync(s => s.Id == id);
+            if (await TryUpdateModelAsync<Personage>(
+                studentToUpdate,
+                "",
+                s => s.Name, s => s.History, s => s.Possession, s => s.Category, s=> s.Capital))
             {
                 try
                 {
-                    _context.Update(personage);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException /* ex */)
                 {
-                    if (!PersonageExists(personage.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
+                        "Повторите попытку, и если проблема не устранена, " +
+ "обратитесь к системному администратору.");
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(personage);
+            return View(studentToUpdate);
         }
 
         // GET: Personages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var personage = await _context.Personages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (personage == null)
+            var student = await _context.Personages
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(personage);
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Ошибка удаления. Попробуйте еще раз, и если проблема не устранена " +
+ "обратитесь к системному администратору.";
+            }
+
+            return View(student);
         }
 
         // POST: Personages/Delete/5
@@ -139,15 +155,25 @@ namespace BrowserGame.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var personage = await _context.Personages.FindAsync(id);
-            _context.Personages.Remove(personage);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var student = await _context.Personages
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (student == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-        private bool PersonageExists(int id)
-        {
-            return _context.Personages.Any(e => e.Id == id);
+            try
+            {
+                _context.Personages.Remove(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
         }
     }
 }
