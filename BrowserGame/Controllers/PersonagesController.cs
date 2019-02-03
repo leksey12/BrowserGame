@@ -20,9 +20,34 @@ namespace BrowserGame.Controllers
         }
 
         // GET: Personages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.Personages.ToListAsync());
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
+            ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
+            ViewData["CurrentFilter"] = searchString;
+            var personages = from s in _context.Personages
+                           select s;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                personages = personages.Where(s => s.Name.Contains(searchString)
+                                       || s.Category.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name":
+                    personages = personages.OrderByDescending(s => s.Name);
+                    break;
+                case "Capital":
+                    personages = personages.OrderBy(s => s.Capital);
+                    break;
+                case "date_desc":
+                    personages = personages.OrderByDescending(s => s.Capital);
+                    break;
+                default:
+                    personages = personages.OrderBy(s => s.Name);
+                    break;
+            }
+            return View(await personages.AsNoTracking().ToListAsync());
         }
 
         // GET: Personages/Details/5
