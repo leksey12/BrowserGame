@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BrowserGame.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +13,7 @@ namespace BrowserGame.Data
             : base(options)
         {
         }
+        public DbSet<UserLogin> UsersLogin { get; set; }
+        
     }
 }
