@@ -13,7 +13,12 @@ namespace BrowserGame.Data
             : base(options)
         {
         }
-        public DbSet<UserLogin> UsersLogin { get; set; }
-        
+        public  DbSet<Personage> Personages { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Personage>().HasKey(m => m.Id);
+            base.OnModelCreating(builder);
+        }
+
     }
 }
