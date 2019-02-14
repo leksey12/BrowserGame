@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace BrowserGame
 {
@@ -67,8 +69,16 @@ namespace BrowserGame
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "C:/Users/Aleksey/source/repos/BrowserGame/logger.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
+
+            //app.Run(async (context) =>
+            //{
+            //    logger.LogInformation("Processing request {0}", context.Request.Path);
+            //    await context.Response.WriteAsync("Hello World!");
+            //});
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
