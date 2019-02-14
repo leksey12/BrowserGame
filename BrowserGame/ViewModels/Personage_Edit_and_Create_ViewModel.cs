@@ -5,11 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BrowserGame.Models
+namespace BrowserGame.ViewModels
 {
-    public class Personage
+    public class Personage_Edit_and_Create_ViewModel
     {
-        public int Id { get; set; }
         [Required]
         [DisplayName("Имя")]
         public string Name { get; set; }
@@ -29,7 +28,5 @@ namespace BrowserGame.Models
         [StringLength(25, MinimumLength = 6, ErrorMessage = "Капитал должен состоять от 6-25 символов.")]
         public string Capital { get; set; }
 
-
     }
-
 }
