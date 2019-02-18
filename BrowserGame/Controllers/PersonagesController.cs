@@ -9,6 +9,7 @@ using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrowserGame.Controllers
 {
@@ -29,7 +30,7 @@ namespace BrowserGame.Controllers
             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
             ViewData["CurrentFilter"] = searchString;
             var personages = from s in _context.Personages
-                           select s;
+                             select s;
             if (!string.IsNullOrEmpty(searchString))
             {
                 personages = personages.Where(s => s.Name.Contains(searchString)
@@ -73,6 +74,7 @@ namespace BrowserGame.Controllers
         }
 
         // GET: Personages/Create
+        [Authorize]
         public IActionResult Create()
         {
             logger.LogInformation("Действие создания персонажа");
@@ -82,6 +84,7 @@ namespace BrowserGame.Controllers
         // POST: Personages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Personage personage)
@@ -134,6 +137,7 @@ namespace BrowserGame.Controllers
             }
             return View(studentToUpdate);
         }
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             var personage = await _context.Personages.FindAsync(id);
@@ -176,6 +180,7 @@ namespace BrowserGame.Controllers
         }
 
         // POST: Personages/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
