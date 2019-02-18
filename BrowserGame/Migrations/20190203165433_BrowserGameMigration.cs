@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BrowserGame.Migrations
 {
-    public partial class Initial : Migration
+    public partial class BrowserGameMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,11 +53,11 @@ namespace BrowserGame.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false),
-                    History = table.Column<string>(nullable: false),
-                    Possession = table.Column<string>(nullable: false),
-                    Category = table.Column<string>(maxLength: 20, nullable: false),
-                    Capital = table.Column<string>(maxLength: 25, nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    History = table.Column<string>(nullable: true),
+                    Possession = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Capital = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,8 +110,8 @@ namespace BrowserGame.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -155,8 +155,8 @@ namespace BrowserGame.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
