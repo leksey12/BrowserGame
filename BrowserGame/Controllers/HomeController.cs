@@ -18,13 +18,13 @@ namespace BrowserGame.Controllers
         }
         public IActionResult Index()
         {
-            logger.LogCritical("Действие главной страницы");
+            logger.LogInformation("Действие главной страницы");
             return View();
         }
 
         public IActionResult Privacy()
         {
-            logger.LogCritical("Действие privacy страницы");
+            logger.LogInformation("Действие privacy страницы");
             return View();
         }
 

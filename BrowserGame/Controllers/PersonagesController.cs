@@ -50,7 +50,7 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
-            logger.LogCritical("Действие сортировки или поиска персонажа");
+            logger.LogInformation("Действие сортировки или поиска персонажа");
             return View(await personages.AsNoTracking().ToListAsync());
         }
 
@@ -68,14 +68,14 @@ namespace BrowserGame.Controllers
             {
                 return NotFound();
             }
-            logger.LogCritical("Действие информация о персонаже");
+            logger.LogInformation("Действие информация о персонаже");
             return View(personage);
         }
 
         // GET: Personages/Create
         public IActionResult Create()
         {
-            logger.LogCritical("Действие создания персонажа");
+            logger.LogInformation("Действие создания персонажа");
             return View();
         }
 
@@ -145,7 +145,7 @@ namespace BrowserGame.Controllers
                 Category=personage.Category,
                 Capital=personage.Capital
             };
-            logger.LogCritical("Действие редактирования персонажа");
+            logger.LogInformation("Действие редактирования персонажа");
             return View(model);
         }
 
@@ -196,7 +196,7 @@ namespace BrowserGame.Controllers
             }
             catch (DbUpdateException /* ex */)
             {
-                logger.LogCritical("Действие удаление персонажа");
+                logger.LogInformation("Действие удаление персонажа");
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
