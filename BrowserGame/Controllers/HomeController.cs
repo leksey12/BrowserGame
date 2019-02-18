@@ -5,18 +5,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BrowserGame.Models;
+using Microsoft.Extensions.Logging;
 
 namespace BrowserGame.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> logger;
+        public HomeController(ILogger<HomeController> logger)
+        {
+            this.logger = logger;
+        }
         public IActionResult Index()
         {
+            logger.LogCritical("Действие главной страницы");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            logger.LogCritical("Действие privacy страницы");
             return View();
         }
 

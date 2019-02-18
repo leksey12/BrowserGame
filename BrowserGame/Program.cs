@@ -41,7 +41,7 @@ namespace BrowserGame
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-            .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
+                .ConfigureLogging(builder => builder.AddFile()) // <- add this line
+            .UseStartup<Startup>();
     }
 }

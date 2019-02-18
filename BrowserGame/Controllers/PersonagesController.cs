@@ -8,16 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace BrowserGame.Controllers
 {
     public class PersonagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public PersonagesController(ApplicationDbContext context)
+        private readonly ILogger<HomeController> logger;
+        public PersonagesController(ApplicationDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
+            this.logger = logger;
         }
 
         // GET: Personages
@@ -48,6 +50,7 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
+            logger.LogCritical("Действие сортировки или поиска персонажа");
             return View(await personages.AsNoTracking().ToListAsync());
         }
 
@@ -65,13 +68,14 @@ namespace BrowserGame.Controllers
             {
                 return NotFound();
             }
-
+            logger.LogCritical("Действие информация о персонаже");
             return View(personage);
         }
 
         // GET: Personages/Create
         public IActionResult Create()
         {
+            logger.LogCritical("Действие создания персонажа");
             return View();
         }
 
@@ -141,6 +145,7 @@ namespace BrowserGame.Controllers
                 Category=personage.Category,
                 Capital=personage.Capital
             };
+            logger.LogCritical("Действие редактирования персонажа");
             return View(model);
         }
 
@@ -191,7 +196,7 @@ namespace BrowserGame.Controllers
             }
             catch (DbUpdateException /* ex */)
             {
-                //Log the error (uncomment ex variable name and write a log.)
+                logger.LogCritical("Действие удаление персонажа");
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
