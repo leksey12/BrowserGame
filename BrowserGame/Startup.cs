@@ -56,10 +56,10 @@ namespace BrowserGame
             services.AddMvc();
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
             opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-           
-                  services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+           .AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
