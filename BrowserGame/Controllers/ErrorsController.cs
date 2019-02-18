@@ -8,17 +8,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-        public class ErrorsController : Controller
-        {
-            // GET: /<controller>/
-            public IActionResult Index()
-            {
-                return View("Error");
-            }
+    public class ErrorsController : Controller
+    {
+        public new int StatusCode { get; }
 
-            public IActionResult Error(int? id)
+        // GET: /<controller>/
+        public IActionResult Index()
+        {
+            return View("Error");
+        }
+
+        public IActionResult Error(int? id, int statusCode=404)
+        {
+            //StatusCode = statusCode;
+            switch (statusCode)
             {
+                case 404:
                     return View("Error404");
+                case 500:
+                    return View("Error500");
+                case 401:
+                    return View("Error401");
+                case 403:
+                    return View("Error403");
+                default:
+                    return null;
             }
         }
     }
+}
