@@ -69,8 +69,7 @@ namespace BrowserGame
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), $"C:/Users/Aleksey/source/repos/BrowserGame/Logging/FileLogger-{DateTime.Today.ToShortDateString()}.txt"));
-            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), $"Logging\\FileLogger-{DateTime.Today.ToShortDateString()}.txt"));
-            var logger = loggerFactory.CreateLogger("FileLogger");
+            var _logger = loggerFactory.CreateLogger("FileLogger");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

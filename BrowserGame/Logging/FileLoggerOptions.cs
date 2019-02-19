@@ -25,7 +25,7 @@ namespace BrowserGame
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            //return logLevel == LogLevel.Trace;
+           
             return true;
         }
 
@@ -33,9 +33,10 @@ namespace BrowserGame
         {
             if (formatter != null)
             {
+                string message = $"[{logLevel.ToString()}] {state.ToString()} {exception?.Message}" + Environment.NewLine;
                 lock (_lock)
                 {
-                    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
+                    File.AppendAllText(filePath, message);
                 }
             }
         }
