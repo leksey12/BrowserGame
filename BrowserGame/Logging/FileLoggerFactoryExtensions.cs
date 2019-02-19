@@ -10,31 +10,11 @@ namespace BrowserGame
 
     public static class FileLoggerFactoryExtensions
     {
-        /// <summary>
-        /// Добавляет регистр файлов с именем «Файл» in Fabrica.
-        /// </summary>
-        public static ILoggingBuilder AddFile(this ILoggingBuilder builder)
-        {
-            builder.Services.AddSingleton<ILoggerProvider, FileLoggerProvider>();
-            return builder;
-        }
-
-        public static ILoggingBuilder AddFile(this ILoggingBuilder builder, string filename)
-        {
-            builder.AddFile(options => options.FileName = "FileLogger-");
-            return builder;
-        }
-
-        public static ILoggingBuilder AddFile(this ILoggingBuilder builder, Action<FileLoggerOptions> configure)
-        {
-            if (configure == null)
+            public static ILoggerFactory AddFile(this ILoggerFactory factory,
+                                            string filePath)
             {
-                throw new ArgumentNullException(nameof(configure));
+                factory.AddProvider(new FileLoggerProvider(filePath));
+                return factory;
             }
-            builder.AddFile();
-            builder.Services.Configure(configure);
-
-            return builder;
         }
-    }
-}
+    } 

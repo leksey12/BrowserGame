@@ -1,5 +1,4 @@
-﻿using BrowserGame.Logging.Internal;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,70 +10,34 @@ namespace BrowserGame
     /// <summary>
     /// Варианты регистрации файлов.
     /// </summary>
-    public class FileLoggerOptions : BatchingLoggerOptions
+    public class FileLoggerOptions : ILogger
     {
-        private int? _fileSizeLimit = 10 * 1024 * 1024;
-        private int? _retainedFileCountLimit = 2;
-        private string _fileName = "FileLogger-";
-
-
-        /// <summary>
-        /// Получает или задает строго положительное значение, представляющее максимальный размер журнала в байтах или ноль без ограничений.
-        /// Когда журнал заполнится, больше сообщений не будет добавлено.
-        /// По умолчанию <c>10MB</c>.
-        /// </summary>
-        public int? FileSizeLimit
+        private string filePath;
+        private object _lock = new object();
+        public FileLoggerOptions(string path)
         {
-            get { return _fileSizeLimit; }
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(FileSizeLimit)} must be positive.");
-                }
-                _fileSizeLimit = value;
-            }
+            filePath = path;
+        }
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return null;
         }
 
-        /// <summary>
-        /// Получает или задает строго положительное значение, представляющее максимальное количество сохраненных файлов, или значение NULL без ограничений.
-          /// По умолчанию <c>2</c>.
-        /// </summary>
-        public int? RetainedFileCountLimit
+        public bool IsEnabled(LogLevel logLevel)
         {
-            get { return _retainedFileCountLimit; }
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(RetainedFileCountLimit)} must be positive.");
-                }
-                _retainedFileCountLimit = value;
-            }
+            //return logLevel == LogLevel.Trace;
+            return true;
         }
 
-        /// <summary>
-        /// Получает или задает префикс имени файла, который будет использоваться для файлов журнала.
-          /// По умолчанию <c>FileLogger-</c>.
-        /// </summary>
-        public string FileName
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            get { return _fileName; }
-            set
+            if (formatter != null)
             {
-                if (string.IsNullOrEmpty(value))
+                lock (_lock)
                 {
-                    throw new ArgumentException(nameof(value));
+                    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
                 }
-                _fileName = value;
             }
         }
-
-        /// <summary>
-        /// Каталог, в который будут записываться файлы журнала, относительно процесса приложения.
-        /// По умолчанию <c>Logging</c>
-        /// </summary>
-        /// <returns></returns>
-        public string LogDirectory { get; set; } = "C:/Users/Aleksey/source/repos/BrowserGame/Logging";
     }
 }

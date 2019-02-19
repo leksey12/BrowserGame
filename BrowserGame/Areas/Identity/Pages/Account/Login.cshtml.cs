@@ -32,7 +32,7 @@ namespace BrowserGame.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        [TempData]
+        //[TempData]
         public string ErrorMessage { get; set; }
 
         public class InputModel

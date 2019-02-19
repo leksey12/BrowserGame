@@ -16,8 +16,8 @@ namespace BrowserGame.Controllers
     public class PersonagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<HomeController> logger;
-        public PersonagesController(ApplicationDbContext context, ILogger<HomeController> logger)
+        private readonly ILogger<PersonagesController> logger;
+        public PersonagesController(ApplicationDbContext context, ILogger<PersonagesController> logger)
         {
             _context = context;
             this.logger = logger;
@@ -51,7 +51,6 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
-            logger.LogInformation("Действие сортировки или поиска персонажа");
             return View(await personages.AsNoTracking().ToListAsync());
         }
 
@@ -60,6 +59,7 @@ namespace BrowserGame.Controllers
         {
             if (id == null)
             {
+                logger.LogCritical("Error NotFound");
                 return NotFound();
             }
 
@@ -114,6 +114,7 @@ namespace BrowserGame.Controllers
         {
             if (id == null)
             {
+                logger.LogCritical("Error NotFound");
                 return NotFound();
             }
             var studentToUpdate = await _context.Personages.SingleOrDefaultAsync(s => s.Id == id);

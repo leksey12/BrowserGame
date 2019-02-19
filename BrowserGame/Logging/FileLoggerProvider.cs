@@ -1,4 +1,4 @@
-﻿using BrowserGame.Logging.Internal;
+﻿
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -10,85 +10,20 @@ using System.Threading.Tasks;
 
 namespace BrowserGame
 {
-    /// <summary>
-    /// ILoggerProvider пишет логи в файл
-    /// </summary>
-    [ProviderAlias("File")]
-    public class FileLoggerProvider : BatchingLoggerProvider
+    public class FileLoggerProvider : ILoggerProvider
     {
-        private readonly string _path;
-        private readonly string _fileName;
-        private readonly int? _maxFileSize;
-        private readonly int? _maxRetainedFiles;
-
-        /// <summary>
-        ///FileLoggerProvider Создает экземпляр
-        /// </summary>
-        /// "options" Объект параметров, управляющий 
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options) : base(options)
+        private string path;
+        public FileLoggerProvider(string _path)
         {
-            var loggerOptions = options.CurrentValue;
-            _path = loggerOptions.LogDirectory;
-            _fileName = loggerOptions.FileName;
-            _maxFileSize = loggerOptions.FileSizeLimit;
-            _maxRetainedFiles = loggerOptions.RetainedFileCountLimit;
+            path = _path;
+        }
+        public ILogger CreateLogger(string categoryName)
+        {
+            return new FileLoggerOptions(path);
         }
 
-       
-        protected override async Task WriteMessagesAsync(IEnumerable<LogMessage> messages, CancellationToken cancellationToken)
+        public void Dispose()
         {
-            Directory.CreateDirectory(_path);
-
-            foreach (var group in messages.GroupBy(GetGrouping))
-            {
-                var fullName = GetFullName(group.Key);
-                var fileInfo = new FileInfo(fullName);
-                if (_maxFileSize > 0 && fileInfo.Exists && fileInfo.Length > _maxFileSize)
-                {
-                    return;
-                }
-
-                using (var streamWriter = File.AppendText(fullName))
-                {
-                    foreach (var item in group)
-                    {
-                        await streamWriter.WriteAsync(item.Message);
-                    }
-                }
-            }
-
-            RollFiles();
         }
-
-        private string GetFullName((int Year, int Month, int Day) group)
-        {
-            return Path.Combine(_path, $"{_fileName}{group.Year:0000}{group.Month:00}{group.Day:00}.txt");
-        }
-
-        private (int Year, int Month, int Day) GetGrouping(LogMessage message)
-        {
-            return (message.Timestamp.Year, message.Timestamp.Month, message.Timestamp.Day);
-        }
-
-        /// <summary>
-        ///Удаляет старые logging, сохраняя количество файлов. 
-        /// </summary>
-        protected void RollFiles()
-        {
-            if (_maxRetainedFiles > 0)
-            {
-                var files = new DirectoryInfo(_path)
-                    .GetFiles(_fileName + "*")
-                    .OrderByDescending(f => f.Name)
-                    .Skip(_maxRetainedFiles.Value);
-
-                foreach (var item in files)
-                {
-                    item.Delete();
-                }
-            }
-        }
-
-        
     }
 }
