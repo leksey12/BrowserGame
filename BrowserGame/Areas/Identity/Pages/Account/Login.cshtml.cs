@@ -4,22 +4,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using BrowserGame.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
 
 namespace BrowserGame.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -32,18 +32,15 @@ namespace BrowserGame.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        //[TempData]
         public string ErrorMessage { get; set; }
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Данное поле должно быть заполнено")]
+            [Required]
             [EmailAddress]
-            [DisplayName("Почтовый адресс")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Данное поле должно быть заполнено")]
-            [DisplayName("Пароль")]
+            [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -79,7 +76,7 @@ namespace BrowserGame.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("Пользователь.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -88,12 +85,12 @@ namespace BrowserGame.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Учетная запись пользователя заблокирована.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Неудачная попытка входа .");
                     return Page();
                 }
             }

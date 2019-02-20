@@ -2,7 +2,7 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Вход";
+    ViewData["Title"] = "Войти";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -39,7 +39,7 @@
                         <a id="forgot-password" asp-page="./ForgotPassword">Забыли пароль?</a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Регистрация нового пользователя</a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Регистрация в качестве нового пользователя</a>
                     </p>
                 </div>
             </form>
@@ -47,7 +47,7 @@
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Используйте другой сервис для входа.</h4>
+            <h4>Используйте другую службу для входа.</h4>
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)

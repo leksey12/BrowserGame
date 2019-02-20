@@ -24,7 +24,7 @@ namespace BrowserGame.Controllers
         }
 
         // GET: Personages
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public IActionResult Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
@@ -51,7 +51,7 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
-            return View(await personages.AsNoTracking().ToListAsync());
+            return View(personages);
         }
 
         // GET: Personages/Details/5

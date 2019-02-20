@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using BrowserGame.Models;
 
 namespace BrowserGame
 {
@@ -57,21 +58,20 @@ namespace BrowserGame
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
             opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            // services.AddIdentity<IdentityUser, IdentityRole>()
-            //.AddEntityFrameworkStores<ApplicationDbContext>()
-            services.AddDefaultIdentity<IdentityUser>()
-         .AddEntityFrameworkStores<ApplicationDbContext>()
-           .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<ApplicationUser>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultUI();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), $"C:/Users/Aleksey/source/repos/BrowserGame/Logging/FileLogger-{DateTime.Today.ToShortDateString()}.txt"));
-            var _logger = loggerFactory.CreateLogger("FileLogger");
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), $"/Logging/FileLogger-{DateTime.Today.ToShortDateString()}.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
             if (env.IsDevelopment())
             {
+                //logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -81,6 +81,7 @@ namespace BrowserGame
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseExceptionHandler("/Errors");
             app.UseStatusCodePagesWithReExecute("/Errors/Error/{0}");
             app.UseHttpsRedirection();

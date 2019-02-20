@@ -25,7 +25,7 @@ namespace BrowserGame
 
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    var context = services.GetRequiredService< ApplicationDbContext>();
                     context.Database.Migrate();
                     DbInitializer.Initialize(context);
                 }
@@ -43,5 +43,6 @@ namespace BrowserGame
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
             .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
+
     }
 }
