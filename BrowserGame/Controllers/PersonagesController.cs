@@ -74,7 +74,7 @@ namespace BrowserGame.Controllers
         }
 
         // GET: Personages/Create
-        [Authorize]
+        [Authorize(Roles = "Администратор")]
         public IActionResult Create()
         {
             logger.LogInformation("Действие создания персонажа");
@@ -86,7 +86,6 @@ namespace BrowserGame.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Personage personage)
         {
             try
@@ -109,7 +108,6 @@ namespace BrowserGame.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, Personage_Edit_and_Create_ViewModel personage)
         {
             if (id == null)
@@ -138,7 +136,7 @@ namespace BrowserGame.Controllers
             }
             return View(studentToUpdate);
         }
-        [Authorize]
+        [Authorize(Roles = "Администратор")]
         public async Task<IActionResult> Edit(int? id)
         {
             var personage = await _context.Personages.FindAsync(id);
@@ -155,6 +153,7 @@ namespace BrowserGame.Controllers
         }
 
         // GET: Personages/Delete/5
+
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -181,7 +180,7 @@ namespace BrowserGame.Controllers
         }
 
         // POST: Personages/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Администратор")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

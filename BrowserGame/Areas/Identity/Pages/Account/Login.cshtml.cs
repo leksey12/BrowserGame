@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace BrowserGame.Areas.Identity.Pages.Account
 {
@@ -44,6 +45,15 @@ namespace BrowserGame.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "Данное поле должно быть заполнено")]
+            [DisplayName("Имя")]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "Данное поле должно быть заполнено")]
+            [Display(Name = "Год")]
+            [StringLength(4, MinimumLength = 4, ErrorMessage = "Введите только 4 не меньше не больше.")]
+            public int Year { get; set; }
+
             [Display(Name = "Запомнить?")]
             public bool RememberMe { get; set; }
         }
@@ -73,7 +83,7 @@ namespace BrowserGame.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password,  Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Пользователь.");

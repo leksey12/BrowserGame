@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
+    [Authorize(Roles = "Администратор")]
     public class UsersController : Controller
     {
         UserManager<ApplicationUser> _userManager;
