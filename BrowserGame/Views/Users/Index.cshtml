@@ -3,7 +3,6 @@
     ViewBag.Title = "Список пользователей";
 }
 @Html.AntiForgeryToken()
-<a asp-action="Create">Добавить пользователя</a>
 
 <table class="table">
     <tr><th>Email</th><th>Имя</th><th>Год</th></tr>
@@ -25,4 +24,6 @@
         </tr>
     }
 </table>
-
+<div>
+    <a asp-action="Create">Добавить пользователя</a>
+</div>
