@@ -52,7 +52,6 @@ namespace BrowserGame.Controllers
             }
             return View(model);
         }
-
         public async Task<IActionResult> Edit(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);

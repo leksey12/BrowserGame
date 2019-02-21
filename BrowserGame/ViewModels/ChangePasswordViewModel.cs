@@ -15,6 +15,7 @@ namespace BrowserGame.ViewModels
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
+        [Required(ErrorMessage = "Вы не ввели старый пароль")]
         [DataType(DataType.Password)]
         public string OldPassword { get; set; }
     }

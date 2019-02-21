@@ -47,7 +47,7 @@ namespace BrowserGame.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "Данное поле должно быть заполнено")]
             [Display(Name = "Год")]
-            [StringLength(4, MinimumLength = 4, ErrorMessage = "Введите только 4 не меньше не больше.")]
+            [Range(1960, 2020, ErrorMessage = "Недопустимый год")]
             public int Year { get; set; }
 
             [Required]
