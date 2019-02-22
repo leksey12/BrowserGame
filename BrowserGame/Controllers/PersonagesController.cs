@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
+using BrowserGame.ViewModels;
 
 namespace BrowserGame.Controllers
 {
@@ -100,38 +101,19 @@ namespace BrowserGame.Controllers
             return View(personage);
         }
 
-        // GET: Personages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var personage = await _context.Personages.FindAsync(id);
-            if (personage == null)
-            {
-                return NotFound();
-            }
-            return View(personage);
-        }
-
-        // POST: Personages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id)
+        public async Task<IActionResult> EditPost(int? id, Personage_Edit_and_Create_ViewModel personage)
         {
             if (id == null)
             {
                 return NotFound();
             }
             var studentToUpdate = await _context.Personages.SingleOrDefaultAsync(s => s.Id == id);
-            if (await TryUpdateModelAsync<Personage>(
+            if (await TryUpdateModelAsync(
                 studentToUpdate,
                 "",
-                s => s.Name, s => s.History, s => s.Possession, s => s.Category, s=> s.Capital))
+                s => s.Name, s => s.History, s => s.Possession, s => s.Category, s => s.Capital))
             {
                 try
                 {
@@ -147,6 +129,19 @@ namespace BrowserGame.Controllers
                 }
             }
             return View(studentToUpdate);
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            var personage = await _context.Personages.FindAsync(id);
+            Personage_Edit_and_Create_ViewModel model = new Personage_Edit_and_Create_ViewModel()
+            {
+                Name = personage.Name,
+                History = personage.History,
+                Possession = personage.Possession,
+                Category=personage.Category,
+                Capital=personage.Capital
+            };
+            return View(model);
         }
 
         // GET: Personages/Delete/5

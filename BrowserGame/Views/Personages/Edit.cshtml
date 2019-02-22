@@ -1,4 +1,4 @@
-﻿@model BrowserGame.Models.Personage
+﻿@model BrowserGame.ViewModels.Personage_Edit_and_Create_ViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,45 +6,57 @@
 
 <h1>Редактирование</h1>
 
-<h4>Персонаж</h4>
+<h4>Персонажа</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Имя</label>
-                <input asp-for="Name" class="form-control"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="History" class="control-label">История</label>
-                <input asp-for="History" class="form-control" />
-                <span asp-validation-for="History" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Possession" class="control-label">Владение</label>
-                <input asp-for="Possession" class="form-control" />
-                <span asp-validation-for="Possession" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label">Категория</label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Capital" class="control-label">Капитал</label>
-                <input asp-for="Capital" class="form-control" />
-                <span asp-validation-for="Capital" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Cохранить" class="btn btn-primary" />
-            </div>
-        </form>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Name) })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.History, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.History, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.History) })
+            @Html.ValidationMessageFor(model => model.History, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Possession, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Possession, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Possession) })
+            @Html.ValidationMessageFor(model => model.Possession, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Category) })
+            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Capital, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Capital, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Capital) })
+            @Html.ValidationMessageFor(model => model.Capital, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Редактировать" class="btn btn-default" />
+        </div>
     </div>
 </div>
-
+}
 <div>
     <a asp-action="Index">Назад</a>
 </div>
