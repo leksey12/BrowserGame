@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BrowserGame.Migrations
 {
-    public partial class BrowserGameMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,9 @@ namespace BrowserGame.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Year = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,11 +55,11 @@ namespace BrowserGame.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
-                    History = table.Column<string>(nullable: true),
-                    Possession = table.Column<string>(nullable: true),
-                    Category = table.Column<string>(nullable: true),
-                    Capital = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    History = table.Column<string>(nullable: false),
+                    Possession = table.Column<string>(nullable: false),
+                    Category = table.Column<string>(maxLength: 20, nullable: false),
+                    Capital = table.Column<string>(maxLength: 25, nullable: false)
                 },
                 constraints: table =>
                 {

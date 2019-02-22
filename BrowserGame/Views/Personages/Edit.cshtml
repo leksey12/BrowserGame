@@ -5,8 +5,6 @@
 }
 
 <h1>Редактирование</h1>
-
-<h4>Персонажа</h4>
 <hr />
 @using (Html.BeginForm())
 {
@@ -52,15 +50,12 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Редактировать" class="btn btn-default" />
+            <input type="submit" value="Сохранить" class="btn btn-success" />
+            <a class="btn btn-sm btn-secondary" asp-action="Index">Назад</a>
         </div>
     </div>
 </div>
 }
-<div>
-    <a asp-action="Index">Назад</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

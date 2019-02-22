@@ -6,9 +6,6 @@
 
 <h1>Персонаж</h1>
 
-<p>
-    <a asp-action="Create">Добавить</a>
-</p>
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -58,11 +55,14 @@
                 @Html.DisplayFor(modelItem => item.Capital)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Информация</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                <a class="btn btn-sm btn-success" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> 
+                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Информация</a> 
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a asp-action="Create">Добавить</a>
+</div>

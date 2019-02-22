@@ -8,26 +8,29 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Data;
 using BrowserGame.Models;
 using BrowserGame.ViewModels;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrowserGame.Controllers
 {
     public class PersonagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public PersonagesController(ApplicationDbContext context)
+        private readonly ILogger<PersonagesController> logger;
+        public PersonagesController(ApplicationDbContext context, ILogger<PersonagesController> logger)
         {
             _context = context;
+            this.logger = logger;
         }
 
         // GET: Personages
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public IActionResult Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
             ViewData["CurrentFilter"] = searchString;
             var personages = from s in _context.Personages
-                           select s;
+                             select s;
             if (!string.IsNullOrEmpty(searchString))
             {
                 personages = personages.Where(s => s.Name.Contains(searchString)
@@ -48,7 +51,7 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
-            return View(await personages.AsNoTracking().ToListAsync());
+            return View(personages);
         }
 
         // GET: Personages/Details/5
@@ -56,6 +59,7 @@ namespace BrowserGame.Controllers
         {
             if (id == null)
             {
+                logger.LogCritical("Error NotFound");
                 return NotFound();
             }
 
@@ -65,21 +69,23 @@ namespace BrowserGame.Controllers
             {
                 return NotFound();
             }
-
+            logger.LogInformation("Действие информация о персонаже");
             return View(personage);
         }
 
         // GET: Personages/Create
+        [Authorize(Roles = "Администратор")]
         public IActionResult Create()
         {
+            logger.LogInformation("Действие создания персонажа");
             return View();
         }
 
         // POST: Personages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Personage personage)
         {
             try
@@ -102,11 +108,11 @@ namespace BrowserGame.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id, Personage_Edit_and_Create_ViewModel personage)
         {
             if (id == null)
             {
+                logger.LogCritical("Error NotFound");
                 return NotFound();
             }
             var studentToUpdate = await _context.Personages.SingleOrDefaultAsync(s => s.Id == id);
@@ -130,6 +136,7 @@ namespace BrowserGame.Controllers
             }
             return View(studentToUpdate);
         }
+        [Authorize(Roles = "Администратор")]
         public async Task<IActionResult> Edit(int? id)
         {
             var personage = await _context.Personages.FindAsync(id);
@@ -141,10 +148,12 @@ namespace BrowserGame.Controllers
                 Category=personage.Category,
                 Capital=personage.Capital
             };
+            logger.LogInformation("Действие редактирования персонажа");
             return View(model);
         }
 
         // GET: Personages/Delete/5
+
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -171,6 +180,7 @@ namespace BrowserGame.Controllers
         }
 
         // POST: Personages/Delete/5
+        [Authorize(Roles = "Администратор")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -191,7 +201,7 @@ namespace BrowserGame.Controllers
             }
             catch (DbUpdateException /* ex */)
             {
-                //Log the error (uncomment ex variable name and write a log.)
+                logger.LogInformation("Действие удаление персонажа");
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
