@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using BrowserGame.Models;
+using BG_DAL.Entityes;
 
 namespace BrowserGame
 {
@@ -55,8 +56,9 @@ namespace BrowserGame
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddMvc();
+            var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            opt.UseNpgsql(connection, b => b.MigrationsAssembly("BG_DAL")));
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()

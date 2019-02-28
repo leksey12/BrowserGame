@@ -15,4 +15,9 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\BG_DAL\BG_DAL.csproj" />
+  </ItemGroup>
+
 </Project>

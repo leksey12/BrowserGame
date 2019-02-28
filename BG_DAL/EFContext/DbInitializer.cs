@@ -28,7 +28,7 @@ namespace BrowserGame.Data
                 context.Personages.Add(s);
             }
             context.SaveChanges();
-            
+
         }
     }
 }

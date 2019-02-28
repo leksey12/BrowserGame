@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BG_DAL.Entityes;
 using BrowserGame.Data;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Authentication;

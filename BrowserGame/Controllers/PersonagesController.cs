@@ -51,6 +51,7 @@ namespace BrowserGame.Controllers
                     personages = personages.OrderBy(s => s.Name);
                     break;
             }
+            //List<Personage> _personages = _context.Personages.ToList();
             return View(personages);
         }
 
