@@ -17,6 +17,9 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using BrowserGame.Models;
 using BG_DAL.Entityes;
+using BG_BLL.Interfaces;
+using BG_BLL;
+using BG_BLL.Imlementations;
 
 namespace BrowserGame
 {
@@ -59,11 +62,15 @@ namespace BrowserGame
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
             opt.UseNpgsql(connection, b => b.MigrationsAssembly("BG_DAL")));
+            //зарегистрировал 
+            services.AddTransient<IPersonage, EFPersonageRepository>();
+            services.AddTransient<IApplicationUser, EFApplicationUserRepository>();
+            services.AddScoped<DataManagerRepo>();
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultUI();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

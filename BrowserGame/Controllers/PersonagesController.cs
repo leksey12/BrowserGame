@@ -10,49 +10,53 @@ using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using BG_BLL;
 
 namespace BrowserGame.Controllers
 {
     public class PersonagesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private DataManagerRepo _datamanager;
         private readonly ILogger<PersonagesController> logger;
-        public PersonagesController(ApplicationDbContext context, ILogger<PersonagesController> logger)
+        public PersonagesController(/*ApplicationDbContext context*/DataManagerRepo dataManager, ILogger<PersonagesController> logger)
         {
-            _context = context;
+            //_context = context;
+            _datamanager = dataManager;
             this.logger = logger;
         }
 
         // GET: Personages
-        public IActionResult Index(string sortOrder, string searchString)
+        public IActionResult Index(/*string sortOrder, string searchString*/)
         {
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
-            ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
-            ViewData["CurrentFilter"] = searchString;
-            var personages = from s in _context.Personages
-                             select s;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                personages = personages.Where(s => s.Name.Contains(searchString)
-                                       || s.Category.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "name":
-                    personages = personages.OrderByDescending(s => s.Name);
-                    break;
-                case "Capital":
-                    personages = personages.OrderBy(s => s.Capital);
-                    break;
-                case "date_desc":
-                    personages = personages.OrderByDescending(s => s.Capital);
-                    break;
-                default:
-                    personages = personages.OrderBy(s => s.Name);
-                    break;
-            }
-            //List<Personage> _personages = _context.Personages.ToList();
-            return View(personages);
+            /* ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
+             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
+             ViewData["CurrentFilter"] = searchString;
+             var personages = from s in _context.Personages
+                              select s;
+             if (!string.IsNullOrEmpty(searchString))
+             {
+                 personages = personages.Where(s => s.Name.Contains(searchString)
+                                        || s.Category.Contains(searchString));
+             }
+             switch (sortOrder)
+             {
+                 case "name":
+                     personages = personages.OrderByDescending(s => s.Name);
+                     break;
+                 case "Capital":
+                     personages = personages.OrderBy(s => s.Capital);
+                     break;
+                 case "date_desc":
+                     personages = personages.OrderByDescending(s => s.Capital);
+                     break;
+                 default:
+                     personages = personages.OrderBy(s => s.Name);
+                     break;*/
+
+            List<Personage> _dirs = _datamanager.Personage.GetAllPersonages().ToList();
+            return View(_dirs);
+            
         }
 
         // GET: Personages/Details/5
