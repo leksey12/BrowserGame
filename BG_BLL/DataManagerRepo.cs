@@ -8,16 +8,13 @@ namespace BG_BLL
    public class DataManagerRepo
     {
         private readonly IPersonage _pRepository;
-        private readonly IApplicationUser _appRepository;
 
-        public DataManagerRepo(IPersonage pRepository, IApplicationUser appRepository)
+        public DataManagerRepo(IPersonage pRepository)
         {
             _pRepository = pRepository;
-            _appRepository = appRepository;
         }
 
         public IPersonage Personage { get { return _pRepository; } }
-        public IApplicationUser User { get { return _appRepository; } }
 
     }
 }

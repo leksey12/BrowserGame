@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BG_DAL.Entityes;
 using BrowserGame.Data;
-using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-    [Authorize(Roles = "Администратор")]
+   [Authorize(Roles = "Администратор")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;

@@ -1,15 +1,16 @@
 ﻿using BG_BLL.Interfaces;
 using BrowserGame.Data;
 using BrowserGame.Models;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace BG_BLL.Imlementations
 {
-   public class EFPersonageRepository : IPersonage
+    public class EFPersonageRepository : IPersonage
     {
         private ApplicationDbContext context;
         public EFPersonageRepository(ApplicationDbContext context)
@@ -19,19 +20,16 @@ namespace BG_BLL.Imlementations
 
         public IEnumerable<Personage> GetAllPersonages()
         {
-            //if (includeMaterials)
-            //    return context.Set<Personage>().Include(x => x.Materials).AsNoTracking().ToList();
-            //else
             return context.Personages.ToList();
         }
-        
+
         //получаем по id
-       public Personage GetPersonageById(int Id)
+        public async Task<Personage> GetPersonageByIdAsync(int? id)
         {
-            //if (includeMaterials)
-            //    return context.Set<Personage>().Include(x => x.Materials).AsNoTracking().FirstOrDefault(x => x.Id == directoryId);
-            //else
-                return context.Personages.FirstOrDefault(x => x.Id == Id);
+            var personage = await context.Personages
+                .FirstOrDefaultAsync(m => m.Id == id);
+            return personage.Adapt<Personage>();
+
         }
 
         public void SavePersonage(Personage personage)
@@ -48,5 +46,6 @@ namespace BG_BLL.Imlementations
             context.Personages.Remove(personage);
             context.SaveChanges();
         }
+       
     }
 }
