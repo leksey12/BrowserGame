@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BG_DAL.Entityes;
-using BrowserGame.Data;
+using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-   [Authorize(Roles = "Администратор")]
+   //[Authorize(Roles = "Администратор")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
-        UserManager<ApplicationUser> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUserData> _userManager;
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUserData> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -61,7 +60,7 @@ namespace BrowserGame.Controllers
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
-            ApplicationUser  user = await _userManager.FindByIdAsync(userId);
+            ApplicationUserData user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 // получем список ролей пользователя
@@ -83,7 +82,7 @@ namespace BrowserGame.Controllers
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
             // получаем пользователя
-            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+            ApplicationUserData user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 // получем список ролей пользователя

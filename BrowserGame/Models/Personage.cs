@@ -17,7 +17,7 @@ namespace BrowserGame.Models
         /// <summary>
         /// Имя
         /// </summary>
-        [Required(ErrorMessage ="Данное поле должно быть заполнено")]
+        [Required(ErrorMessage = "Данное поле должно быть заполнено")]
         [DisplayName("Имя")]
         public string Name { get; set; }
 

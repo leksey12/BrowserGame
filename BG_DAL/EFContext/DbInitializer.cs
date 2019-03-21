@@ -1,10 +1,9 @@
-﻿using BrowserGame.Models;
-using System;
-using System.Collections.Generic;
+﻿
+using BG_DAL.Entityes;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BrowserGame.Data
+namespace BG_DAL.EFContext
 {
     public class DbInitializer
     {
@@ -18,12 +17,12 @@ namespace BrowserGame.Data
                 return;   // DB has been seeded
             }
 
-            var usersLogin = new Personage[]
+            var usersLogin = new PersonageData[]
             {
-            new Personage{Name="Alexander",History="Живет футболом",Possession="Нападающий",Category="Лига Европы",Capital="700000",Id=1},
-            new Personage{Name="Roman",History="Любит Деньги",Possession="Защитник",Category="Лига Европы",Capital="500000",Id=2},
+            new PersonageData{Name="Alexander",History="Живет футболом",Possession="Нападающий",Category="Лига Европы",Capital="700000",Id=1},
+            new PersonageData{Name="Roman",History="Любит Деньги",Possession="Защитник",Category="Лига Европы",Capital="500000",Id=2},
             };
-            foreach (Personage s in usersLogin)
+            foreach (PersonageData s in usersLogin)
             {
                 context.Personages.Add(s);
             }

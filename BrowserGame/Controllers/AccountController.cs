@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BG_DAL.Entityes;
-using BrowserGame.Data;
 using BrowserGame.ViewModels;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +8,10 @@ namespace BrowserGame.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUserData> _userManager;
+        private readonly SignInManager<ApplicationUserData> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUserData> userManager, SignInManager<ApplicationUserData> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -31,7 +26,7 @@ namespace BrowserGame.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email, Year = model.Year };
+                ApplicationUserData user = new ApplicationUserData { Email = model.Email, UserName = model.Email, Year = model.Year};
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

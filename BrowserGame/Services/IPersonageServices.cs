@@ -1,12 +1,11 @@
-﻿using BrowserGame.Models;
-using System;
+﻿
+using BrowserGame.Models;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BG_BLL.Interfaces
+namespace BrowserGame.Services
 {
-   public interface IPersonage
+   public interface IPersonageServices
     {
         /// <summary>
         /// Список всех персонажей
@@ -25,13 +24,14 @@ namespace BG_BLL.Interfaces
         /// Добавление нового/изменение персонажа и сохранение
         /// </summary>
         /// <param name="personage"></param>
-        void SavePersonage(Personage personage);
+        int SavePersonage(Personage personage);
 
         /// <summary>
         /// Удаление Персонажа
         /// </summary>
         /// <param name="personage"></param>
-        void DeletePersonage(Personage personage);
-        
+        Task DeletePersonageAsync(int id);
+
+
     }
 }

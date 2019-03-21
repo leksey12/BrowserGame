@@ -6,12 +6,11 @@ using System.Text;
 
 namespace BG_DAL.Entityes
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUserData : IdentityUser
     {
         /// <summary>
         /// Имя Пользователя
         /// </summary>
-        [DisplayName("Имя")]
         public string Name { get; set; }
 
         /// <summary>

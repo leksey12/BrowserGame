@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BG_DAL.Migrations
 {
-    public partial class football : Migration
+    public partial class footbal : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,11 +55,11 @@ namespace BG_DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: false),
-                    History = table.Column<string>(nullable: false),
-                    Possession = table.Column<string>(nullable: false),
-                    Category = table.Column<string>(maxLength: 20, nullable: false),
-                    Capital = table.Column<string>(maxLength: 25, nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    History = table.Column<string>(nullable: true),
+                    Possession = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Capital = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using BG_DAL.Entityes;
-using BrowserGame.Models;
+﻿using BG_DAL.Entityes;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace BrowserGame.Data
+namespace BG_DAL.EFContext
 {
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUserData>
     {
-        public DbSet<Personage> Personages { get; set; }
+        public DbSet<PersonageData> Personages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }

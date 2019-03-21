@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame.Data;
 using BrowserGame.Models;
-using BrowserGame.ViewModels;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
-using BG_BLL;
+using BrowserGame.Services;
 
 namespace BrowserGame.Controllers
 {
     public class PersonagesController : Controller
     {
-        private DataManagerRepo _datamanager;
+        private readonly IPersonageServices _personage;
         private readonly ILogger<PersonagesController> logger;
-        public PersonagesController(DataManagerRepo dataManager, ILogger<PersonagesController> logger)
+        public PersonagesController(IPersonageServices personage, ILogger<PersonagesController> logger)
         {
-            _datamanager = dataManager;
+            _personage = personage;
             this.logger = logger;
         }
 
@@ -36,7 +30,7 @@ namespace BrowserGame.Controllers
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
             ViewData["CurrentFilter"] = searchString;
-            var personages = from s in _datamanager.Personage.GetAllPersonages()
+            var personages = from s in _personage.GetAllPersonages()
                              select s;
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -76,7 +70,7 @@ namespace BrowserGame.Controllers
                 return NotFound();
             }
 
-            var personage = await _datamanager.Personage.GetPersonageByIdAsync(id);
+            var personage = await _personage.GetPersonageByIdAsync(id);
             if (personage == null)
             {
                 return NotFound();
@@ -110,7 +104,7 @@ namespace BrowserGame.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _datamanager.Personage.SavePersonage(personage);
+                    _personage.SavePersonage(personage);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -139,7 +133,7 @@ namespace BrowserGame.Controllers
             {
                 try
                 {
-                    _datamanager.Personage.SavePersonage(personage);
+                    _personage.SavePersonage(personage);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException)
@@ -160,7 +154,7 @@ namespace BrowserGame.Controllers
         //[Authorize(Roles = "Администратор")]
         public async Task<IActionResult> Edit(int? id)
         {
-            var personage = await _datamanager.Personage.GetPersonageByIdAsync(id);
+            var personage = await _personage.GetPersonageByIdAsync(id);
             if (personage == null)
             {
                 return NotFound();
@@ -183,7 +177,7 @@ namespace BrowserGame.Controllers
                 return NotFound();
             }
 
-            var personage = await _datamanager.Personage.GetPersonageByIdAsync(id);
+            var personage = await _personage.GetPersonageByIdAsync(id);
             if (personage == null)
             {
                 return NotFound();
@@ -208,9 +202,9 @@ namespace BrowserGame.Controllers
         //[Authorize(Roles = "Администратор")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id, Personage personage)
+        public IActionResult DeleteConfirmed(int id)
         {
-            _datamanager.Personage.DeletePersonage(personage);
+            _personage.DeletePersonageAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
