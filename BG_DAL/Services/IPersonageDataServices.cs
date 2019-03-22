@@ -21,10 +21,16 @@ namespace BG_DAL.Services
         Task<PersonageData> GetPersonageByIdAsync(int? id);
 
         /// <summary>
-        /// Добавление нового/изменение персонажа и сохранение
+        /// Добавление нового и сохранение
         /// </summary>
         /// <param name="personage"></param>
         void SavePersonage(PersonageData personage);
+
+        /// <summary>
+        /// изменение персонажа и сохранение
+        /// </summary>
+        /// <param name="personage"></param>
+        void UpdatePersonage(PersonageData personage);
 
         /// <summary>
         /// Удаление Персонажа

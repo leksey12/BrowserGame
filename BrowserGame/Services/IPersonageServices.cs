@@ -24,7 +24,7 @@ namespace BrowserGame.Services
         /// Добавление нового/изменение персонажа и сохранение
         /// </summary>
         /// <param name="personage"></param>
-        int SavePersonage(Personage personage);
+        int SavePersonage(Personage personage, string operation);
 
         /// <summary>
         /// Удаление Персонажа

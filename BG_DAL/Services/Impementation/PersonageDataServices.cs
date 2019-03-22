@@ -33,7 +33,11 @@ namespace BG_DAL.Services.Impementation
         public void SavePersonage(PersonageData personage)
         {
                 db.Personages.Add(personage);
-                db.Entry(personage).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+        public void UpdatePersonage(PersonageData personage)
+        {
+            db.Entry(personage).State = EntityState.Modified;
             db.SaveChanges();
         }
 

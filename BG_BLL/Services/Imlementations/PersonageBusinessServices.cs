@@ -36,17 +36,20 @@ namespace BG_BLL.Imlementations
             return personageDto.Adapt<PersonageBusiness>();
         }
 
-        public void SavePersonage(PersonageBusiness personage)
+        public void SavePersonage(PersonageBusiness personage, string operation)
         {
              
             var personageDto = personage.Adapt<PersonageData>();
-            /*personageDto.Name = personage.Name;
+           personageDto.Id = personage.Id;
             switch (operation)
             {
                 case "add":
                      personageServices.SavePersonage(personageDto);
                     break;
-            }*/
+                case "update":
+                    personageServices.UpdatePersonage(personageDto);
+                    break;
+            }
         }
 
         public Task DeletePersonageAsync(int id)

@@ -25,7 +25,7 @@ namespace BG_BLL.Services
         /// Добавление нового/изменение персонажа и сохранение
         /// </summary>
         /// <param name="personage"></param>
-        void SavePersonage(PersonageBusiness personage);
+        void SavePersonage(PersonageBusiness personage, string operration);
 
         /// <summary>
         /// Удаление Персонажа

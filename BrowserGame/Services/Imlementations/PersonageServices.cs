@@ -29,10 +29,10 @@ namespace BG_BLL.Imlementations
             return (await personageData.GetPersonageByIdAsync(id)).Adapt<Personage>();
         }
 
-        public int SavePersonage(Personage personage)
+        public int SavePersonage(Personage personage, string operation)
         {
             var personageBus = personage.Adapt<PersonageBusiness>();
-            personageData.SavePersonage(personageBus);
+            personageData.SavePersonage(personageBus, operation);
             return personageBus.Id;
         }
 

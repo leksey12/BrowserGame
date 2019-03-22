@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BG_DAL.Entityes;
-using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-   // [Authorize(Roles = "Администратор")]
+   [Authorize(Roles = "Администратор")]
     public class UsersController : Controller
     {
         UserManager<ApplicationUserData> _userManager;

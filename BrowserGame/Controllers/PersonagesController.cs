@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame.Models;
 using Microsoft.Extensions.Logging;
 using BrowserGame.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrowserGame.Controllers
 {
@@ -25,6 +26,7 @@ namespace BrowserGame.Controllers
         /// <param name="sortOrder"> сортировка</param>
         /// <param name="searchString">поиск</param>
         /// <returns></returns>
+        [HttpGet]
         public IActionResult Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
@@ -62,6 +64,7 @@ namespace BrowserGame.Controllers
         /// <param name="id">Идентификатор</param>
         /// <returns></returns>
         // GET: Personages/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -84,7 +87,8 @@ namespace BrowserGame.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Personages/Create
-       // [Authorize(Roles = "Администратор")]
+       [Authorize(Roles = "Администратор")]
+        [HttpGet]
         public IActionResult Create()
         {
             logger.LogInformation("Действие создания персонажа");
@@ -104,7 +108,7 @@ namespace BrowserGame.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _personage.SavePersonage(personage);
+                    _personage.SavePersonage(personage, "add");
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -133,7 +137,7 @@ namespace BrowserGame.Controllers
             {
                 try
                 {
-                    _personage.SavePersonage(personage);
+                    _personage.SavePersonage(personage, "update");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException)
@@ -151,7 +155,8 @@ namespace BrowserGame.Controllers
         /// </summary>
         /// <param name="id">идентификатор</param>
         /// <returns></returns>
-        //[Authorize(Roles = "Администратор")]
+        [Authorize(Roles = "Администратор")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             var personage = await _personage.GetPersonageByIdAsync(id);
@@ -199,7 +204,7 @@ namespace BrowserGame.Controllers
         /// <param name="personage">переменная</param>
         /// <returns></returns>
         // POST: Personages/Delete/5
-        //[Authorize(Roles = "Администратор")]
+        [Authorize(Roles = "Администратор")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
