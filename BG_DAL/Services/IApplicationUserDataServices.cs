@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace BG_DAL.Services
 {
-   public interface IApplicationUserDataServices
+    /// <summary>
+    /// Интерфейс работы с пользователями
+    /// </summary>
+    public interface IApplicationUserDataServices
     {
      /// <summary>
      /// Регистрация пользователя

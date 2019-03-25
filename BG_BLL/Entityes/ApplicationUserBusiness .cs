@@ -6,6 +6,9 @@ using System.Text;
 
 namespace BG_DAL.Entityes
 {
+    /// <summary>
+    /// Класс пользователь
+    /// </summary>
     public class ApplicationUserBusiness : ApplicationUserData
     {
         /// <summary>

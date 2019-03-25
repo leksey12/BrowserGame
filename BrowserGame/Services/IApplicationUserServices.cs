@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace BrowserGame.Services
 {
+    /// <summary>
+    /// Интерфейс работы с пользователями
+    /// </summary>
     public interface IApplicationUserServices
     {
         /// <summary>

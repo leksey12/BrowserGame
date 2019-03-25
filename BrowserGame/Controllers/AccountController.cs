@@ -16,11 +16,22 @@ namespace BrowserGame.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
+        /// <summary>
+        /// Страница Регистрации
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
+        /// <summary>
+        /// Регистрирует
+        /// </summary>
+        /// <param name="model">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {

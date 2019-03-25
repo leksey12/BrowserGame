@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BG_BLL.Services
 {
+    /// <summary>
+    /// Интерфейс работы с пользователями
+    /// </summary>
     public interface IApplicationUserBusinessServices
     {
         /// <summary>

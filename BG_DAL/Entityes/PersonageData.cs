@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BG_DAL.Entityes
 {
+    /// <summary>
+    /// Класс персонаж
+    /// </summary>
     public class PersonageData
     {
         /// <summary>

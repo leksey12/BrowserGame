@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace BrowserGame.Services
 {
-   public interface IPersonageServices
+    /// <summary>
+    /// Интерфейс работы с персонажем
+    /// </summary>
+    public interface IPersonageServices
     {
         /// <summary>
         /// Список всех персонажей

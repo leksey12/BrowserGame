@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BrowserGame.Models
 {
+    /// <summary>
+    /// Класс пользователь
+    /// </summary>
     public class ApplicationUser: ApplicationUserData
     {
         /// <summary>

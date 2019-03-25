@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BG_DAL.Services
 {
-   public interface IPersonageDataServices
+    /// <summary>
+    /// Интерфейс работы с персонажем
+    /// </summary>
+    public interface IPersonageDataServices
     { /// <summary>
       /// Список всех персонажей
       /// </summary>

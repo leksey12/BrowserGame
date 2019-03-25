@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BrowserGame.Models
 {
+    /// <summary>
+    /// Класс персонаж
+    /// </summary>
     public class Personage
     {
         /// <summary>

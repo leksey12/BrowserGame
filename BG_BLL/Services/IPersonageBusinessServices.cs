@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BG_BLL.Services
 {
-   public interface IPersonageBusinessServices
+    /// <summary>
+    /// Интерфейс работы с персонажем
+    /// </summary>
+    public interface IPersonageBusinessServices
     {
         /// <summary>
         /// Список всех персонажей

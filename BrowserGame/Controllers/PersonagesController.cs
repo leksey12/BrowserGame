@@ -32,8 +32,7 @@ namespace BrowserGame.Controllers
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewData["CapitalSortParm"] = sortOrder == "Capital" ? "date_desc" : "Capital";
             ViewData["CurrentFilter"] = searchString;
-            var personages = from s in _personage.GetAllPersonages()
-                             select s;
+            var personages = _personage.GetAllPersonages();
             if (!string.IsNullOrEmpty(searchString))
             {
                 personages = personages.Where(s => s.Name.Contains(searchString)

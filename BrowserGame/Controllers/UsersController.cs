@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-   [Authorize(Roles = "Администратор")]
+    [Authorize(Roles = "Администратор")]
     public class UsersController : Controller
     {
         UserManager<ApplicationUserData> _userManager;
@@ -24,17 +24,27 @@ namespace BrowserGame.Controllers
             return View(_userManager.Users.ToList());
         }
 
+        /// <summary>
+        /// Страница добавления пользователя
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// добавляет
+        /// </summary>
+        /// <param name="model"> переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUserData user = new ApplicationUserData { Email = model.Email, UserName = model.Email, Year = model.Year, Name=model.Name };
+                ApplicationUserData user = new ApplicationUserData { Email = model.Email, UserName = model.Email, Year = model.Year, Name = model.Name };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -50,6 +60,13 @@ namespace BrowserGame.Controllers
             }
             return View(model);
         }
+
+        /// <summary>
+        /// страница изменения пользователя
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns></returns>
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             ApplicationUserData user = await _userManager.FindByIdAsync(id);
@@ -61,6 +78,11 @@ namespace BrowserGame.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// изменяет 
+        /// </summary>
+        /// <param name="model">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
@@ -91,6 +113,11 @@ namespace BrowserGame.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Удаляет пользователя
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
@@ -101,7 +128,13 @@ namespace BrowserGame.Controllers
             }
             return RedirectToAction("Index");
         }
-        // метод для смены пароля 
+
+        /// <summary>
+        /// Страница смены пароля
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns></returns>
+        [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
         {
             ApplicationUserData user = await _userManager.FindByIdAsync(id);
@@ -113,6 +146,11 @@ namespace BrowserGame.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// изменяет пароль
+        /// </summary>
+        /// <param name="model">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {

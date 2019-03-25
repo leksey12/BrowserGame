@@ -20,9 +20,24 @@ namespace BrowserGame.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
+        /// <summary>
+        /// Список ролей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
+        /// <summary>
+        /// Страница добавления роли
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create() => View();
+
+        /// <summary>
+        /// Добавляет роль
+        /// </summary>
+        /// <param name="name">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -44,6 +59,11 @@ namespace BrowserGame.Controllers
             return View(name);
         }
 
+        /// <summary>
+        /// Удаляет роль
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -55,8 +75,18 @@ namespace BrowserGame.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Страница всех пользователей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
+        /// <summary>
+        /// Страница смены роли для пользователя
+        /// </summary>
+        /// <param name="userId">переменная</param>
+        /// <returns></returns>
+        [HttpGet]
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
@@ -78,6 +108,13 @@ namespace BrowserGame.Controllers
 
             return NotFound();
         }
+        
+        /// <summary>
+        /// Изменяет роль для пользователя
+        /// </summary>
+        /// <param name="userId">переменная</param>
+        /// <param name="roles">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
