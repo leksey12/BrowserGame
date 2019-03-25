@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using BrowserGame.Models;
+using BG_BLL;
+using BG_BLL.Data;
+using BG_DAL.EFContext;
+using BrowserGame.Services;
+using BG_BLL.Imlementations;
+using BG_DAL.Entityes;
 
 namespace BrowserGame
 {
@@ -55,13 +55,19 @@ namespace BrowserGame
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddMvc();
+            var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            opt.UseNpgsql(connection, b => b.MigrationsAssembly("BG_DAL")));
+            //зарегистрировал 
+            services.AddScoped<IPersonageServices, PersonageServices>();
+            services.AddScoped<IApplicationUserServices, ApplicationUserServices>();
+            services.AddDataLibraryCollection(Configuration);
+            services.AddBusinessLibraryCollection();
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<ApplicationUserData>()
                 .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultUI();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

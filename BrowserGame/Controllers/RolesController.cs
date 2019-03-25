@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BrowserGame.Data;
+using BG_DAL.Entityes;
+using BrowserGame.Models;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,19 +10,34 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame.Controllers
 {
-    [Authorize(Roles = "Администратор")]
+   [Authorize(Roles = "Администратор")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
-        UserManager<ApplicationUser> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUserData> _userManager;
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUserData> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
+        /// <summary>
+        /// Список ролей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
+        /// <summary>
+        /// Страница добавления роли
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create() => View();
+
+        /// <summary>
+        /// Добавляет роль
+        /// </summary>
+        /// <param name="name">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -44,6 +59,11 @@ namespace BrowserGame.Controllers
             return View(name);
         }
 
+        /// <summary>
+        /// Удаляет роль
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -55,12 +75,22 @@ namespace BrowserGame.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Страница всех пользователей
+        /// </summary>
+        /// <returns></returns>
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
+        /// <summary>
+        /// Страница смены роли для пользователя
+        /// </summary>
+        /// <param name="userId">переменная</param>
+        /// <returns></returns>
+        [HttpGet]
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
-            ApplicationUser  user = await _userManager.FindByIdAsync(userId);
+            ApplicationUserData user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 // получем список ролей пользователя
@@ -78,11 +108,18 @@ namespace BrowserGame.Controllers
 
             return NotFound();
         }
+        
+        /// <summary>
+        /// Изменяет роль для пользователя
+        /// </summary>
+        /// <param name="userId">переменная</param>
+        /// <param name="roles">переменная</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
             // получаем пользователя
-            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+            ApplicationUserData user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 // получем список ролей пользователя
