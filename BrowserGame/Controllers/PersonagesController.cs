@@ -13,6 +13,7 @@ namespace BrowserGame.Controllers
     {
         private readonly IPersonageServices _personage;
         private readonly ILogger<PersonagesController> logger;
+
         public PersonagesController(IPersonageServices personage, ILogger<PersonagesController> logger)
         {
             _personage = personage;
