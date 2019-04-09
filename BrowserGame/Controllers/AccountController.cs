@@ -3,6 +3,7 @@ using BG_DAL.Entityes;
 using BrowserGame.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BrowserGame.Controllers
 {
@@ -24,7 +25,7 @@ namespace BrowserGame.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View("Register");
         }
 
         /// <summary>

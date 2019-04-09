@@ -15,7 +15,7 @@ namespace BrowserGame.Controllers
         public IActionResult Index()
         {
             logger.LogInformation("Действие главной страницы");
-            return View();
+            return View("Index");
         }
 
         public IActionResult Privacy()
